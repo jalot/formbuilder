@@ -1,0 +1,23 @@
+<!--@subject {{var subject}} @-->
+<!DOCTYPE html><html><head><meta charset="UTF-8"></head>
+<body style="font-family:Arial,sans-serif;color:#333;margin:0;padding:0;background:#f4f4f4">
+<div style="max-width:600px;margin:20px auto;background:#fff;border-radius:6px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.1)">
+  <div style="background:#6b2fa0;padding:24px 30px">
+    <h2 style="color:#fff;margin:0;font-size:20px">Wilchers Waanzinnige Wereld</h2>
+    <p style="color:#e0c8f8;margin:4px 0 0;font-size:14px">Bevestiging van uw inzending</p>
+  </div>
+  <div style="padding:24px 30px">
+    <p>Beste {{var submitter_name}},</p>
+    <p>Wij bevestigen de ontvangst van uw <strong>{{var form_title}}</strong>.</p>
+    <p><strong>Tijdstip van ontvangst:</strong> {{var timestamp}}</p>
+    <hr style="border:none;border-top:1px solid #e8dff5;margin:16px 0"/>
+    <h3 style="color:#6b2fa0;margin-top:0">Overzicht van uw inzending</h3>
+    {{var body_html}}
+    <hr style="border:none;border-top:1px solid #e8dff5;margin:20px 0"/>
+    <p style="color:#6b2fa0;font-style:italic">{{var success_message}}</p>
+  </div>
+  <div style="background:#f5f0fa;padding:12px 30px;font-size:12px;color:#888;text-align:center">
+    Wilchers Waanzinnige Wereld &mdash; wilma@wilcherswaanzinnigewereld.nl
+  </div>
+</div>
+</body></html>
