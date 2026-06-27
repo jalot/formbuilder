@@ -1,0 +1,64 @@
+<?php
+/** @var WilchersFormBuilderBlockAdminhtmlFormEdit $block */
+$form = $block->getForm();
+$isNew = !$form->getId();
+$fields = $form->getFieldsConfig();
+?>
+<div class="wfb-admin">
+<h2><?= $isNew ? 'Nieuw formulier' : 'Bewerken: ' . $block->escapeHtml($form->getTitle()) ?></h2>
+<form action="<?= $block->escapeUrl($block->getSaveUrl()) ?>" method="post" id="wfb-edit-form">
+  <?= $block->getBlockHtml('formkey') ?>
+  <?php if (!$isNew): ?><input type="hidden" name="form_id" value="<?= (int)$form->getId() ?>"/><?php endif; ?>
+
+  <div class="wfb-section">
+    <h3>Algemene instellingen</h3>
+    <div class="wfb-row"><label>Naam formulier *</label><input type="text" name="title" value="<?= $block->escapeHtmlAttr($form->getTitle()) ?>" required/></div>
+    <div class="wfb-row"><label>URL-sleutel * <small>(bijv. contact, herroeping)</small></label><input type="text" name="identifier" value="<?= $block->escapeHtmlAttr($form->getData('identifier')) ?>" required/></div>
+    <div class="wfb-row"><label>Ontvanger e-mailadres *</label><input type="email" name="recipient_email" value="<?= $block->escapeHtmlAttr($form->getData('recipient_email')) ?>" required/></div>
+    <div class="wfb-row"><label>Succesbericht</label><textarea name="success_message" rows="2"><?= $block->escapeHtml($form->getData('success_message')) ?></textarea></div>
+    <div class="wfb-row wfb-check"><label><input type="checkbox" name="allow_copy" value="1"<?= $form->getData('allow_copy') ? ' checked' : '' ?>/> Invuller mag kiezen voor een kopie per e-mail</label></div>
+    <div class="wfb-row wfb-check"><label><input type="checkbox" name="is_active" value="1"<?= $form->getData('is_active') !== '0' ? ' checked' : '' ?>/> Formulier actief</label></div>
+  </div>
+
+  <div class="wfb-section">
+    <h3>Velden <button type="button" onclick="wfbAddField()" class="action-secondary">+ Veld toevoegen</button></h3>
+    <div id="wfb-fields">
+    <?php foreach ($fields as $i => $f): ?>
+    <div class="wfb-field-row" data-index="<?= $i ?>">
+      <input type="text" name="fields[<?= $i ?>][label]" value="<?= $block->escapeHtmlAttr($f['label']) ?>" placeholder="Label" required/>
+      <input type="text" name="fields[<?= $i ?>][name]"  value="<?= $block->escapeHtmlAttr($f['name']) ?>"  placeholder="Veldnaam"/>
+      <select name="fields[<?= $i ?>][type]">
+        <?php foreach ($block->getFieldTypes() as $val => $lbl): ?>
+        <option value="<?= $val ?>"<?= ($f['type']??'text')===$val?' selected':'' ?>><?= $lbl ?></option>
+        <?php endforeach; ?>
+      </select>
+      <label><input type="checkbox" name="fields[<?= $i ?>][required]" value="1"<?= !empty($f['required'])?' checked':'' ?>/> Verplicht</label>
+      <button type="button" onclick="this.closest('.wfb-field-row').remove()" class="wfb-del">✕</button>
+    </div>
+    <?php endforeach; ?>
+    </div>
+  </div>
+
+  <div class="wfb-actions">
+    <button type="submit" class="action-primary">Opslaan</button>
+    <a href="<?= $block->escapeUrl($block->getBackUrl()) ?>" class="action-secondary">Terug</a>
+  </div>
+</form>
+</div>
+
+<script>
+let wfbIdx = <?= count($fields) ?>;
+function wfbAddField() {
+  const i = wfbIdx++;
+  const types = <?= json_encode($block->getFieldTypes()) ?>;
+  let opts = Object.entries(types).map(([v,l]) => `<option value="${v}">${l}</option>`).join('');
+  document.getElementById('wfb-fields').insertAdjacentHTML('beforeend',
+    `<div class="wfb-field-row" data-index="${i}">
+      <input type="text" name="fields[${i}][label]" placeholder="Label" required/>
+      <input type="text" name="fields[${i}][name]"  placeholder="Veldnaam"/>
+      <select name="fields[${i}][type]">${opts}</select>
+      <label><input type="checkbox" name="fields[${i}][required]" value="1"/> Verplicht</label>
+      <button type="button" onclick="this.closest('.wfb-field-row').remove()" class="wfb-del">✕</button>
+    </div>`);
+}
+</script>
