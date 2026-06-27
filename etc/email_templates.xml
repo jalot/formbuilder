@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Email:etc/email_templates.xsd">
+    <template id="wilchers_formbuilder_notification"
+              label="FormBuilder: Notificatie aan winkeleigenaar"
+              file="notification.html"
+              type="html"
+              module="Wilchers_FormBuilder"
+              area="frontend"/>
+    <template id="wilchers_formbuilder_confirmation"
+              label="FormBuilder: Bevestiging aan invuller"
+              file="confirmation.html"
+              type="html"
+              module="Wilchers_FormBuilder"
+              area="frontend"/>
+</config>
