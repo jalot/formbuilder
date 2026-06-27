@@ -1,0 +1,25 @@
+<?php /** @var WilchersFormBuilderBlockAdminhtmlSubmissionGrid $block */ ?>
+<div class="wfb-admin">
+  <h2>Inzendingen</h2>
+  <table class="wfb-table">
+    <thead><tr><th>ID</th><th>Formulier</th><th>Naam</th><th>E-mail</th><th>IP</th><th>Datum</th><th>Gegevens</th></tr></thead>
+    <tbody>
+    <?php foreach ($block->getSubmissions() as $sub): ?>
+    <?php $data = $sub->getDataArray(); ?>
+    <tr>
+      <td><?= (int)$sub->getId() ?></td>
+      <td><?= $block->escapeHtml($sub->getData('form_title')) ?></td>
+      <td><?= $block->escapeHtml($sub->getData('submitter_name')) ?></td>
+      <td><?= $block->escapeHtml($sub->getData('submitter_email')) ?></td>
+      <td><?= $block->escapeHtml($sub->getData('ip_address')) ?></td>
+      <td><?= $block->escapeHtml($sub->getData('submitted_at')) ?></td>
+      <td><details><summary>Toon</summary><table class="wfb-sub-data">
+        <?php foreach ($data as $lbl => $val): ?>
+        <tr><th><?= $block->escapeHtml($lbl) ?></th><td><?= nl2br($block->escapeHtml((string)$val)) ?></td></tr>
+        <?php endforeach; ?>
+      </table></details></td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
