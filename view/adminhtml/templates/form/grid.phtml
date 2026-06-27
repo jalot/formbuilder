@@ -1,0 +1,26 @@
+<?php /** @var WilchersFormBuilderBlockAdminhtmlFormGrid $block */ ?>
+<div class="wfb-admin">
+  <div class="wfb-header">
+    <h2>Formulieren beheren</h2>
+    <a href="<?= $block->escapeUrl($block->getNewUrl()) ?>" class="action-primary">+ Nieuw formulier</a>
+  </div>
+  <table class="wfb-table">
+    <thead><tr><th>ID</th><th>Naam</th><th>URL-sleutel</th><th>Ontvanger</th><th>Actief</th><th>Acties</th></tr></thead>
+    <tbody>
+    <?php foreach ($block->getForms() as $form): ?>
+    <tr>
+      <td><?= (int)$form->getId() ?></td>
+      <td><?= $block->escapeHtml($form->getTitle()) ?></td>
+      <td><code>/formulier/form/view/id/<?= $block->escapeHtml($form->getData('identifier')) ?></code></td>
+      <td><?= $block->escapeHtml($form->getData('recipient_email')) ?></td>
+      <td><?= $form->getData('is_active') ? '<span style="color:green">Ja</span>' : '<span style="color:red">Nee</span>' ?></td>
+      <td>
+        <a href="<?= $block->escapeUrl($block->getEditUrl($form->getId())) ?>">Bewerken</a> |
+        <a href="<?= $block->escapeUrl($block->getDeleteUrl($form->getId())) ?>" onclick="return confirm('Zeker verwijderen?')">Verwijderen</a> |
+        <a href="/formulier/form/view/id/<?= $block->escapeHtml($form->getData('identifier')) ?>" target="_blank">Bekijken</a>
+      </td>
+    </tr>
+    <?php endforeach; ?>
+    </tbody>
+  </table>
+</div>
