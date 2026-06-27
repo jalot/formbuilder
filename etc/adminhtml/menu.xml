@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Config/etc/menu.xsd">
+    <menu>
+        <add id="Wilchers_FormBuilder::forms"
+             title="Formulieren"
+             module="Wilchers_FormBuilder"
+             sortOrder="100"
+             parent="Magento_Backend::content"
+             action="wilchers_formbuilder/form/index"
+             resource="Wilchers_FormBuilder::form"/>
+        <add id="Wilchers_FormBuilder::submissions"
+             title="Inzendingen"
+             module="Wilchers_FormBuilder"
+             sortOrder="110"
+             parent="Magento_Backend::content"
+             action="wilchers_formbuilder/submission/index"
+             resource="Wilchers_FormBuilder::form"/>
+    </menu>
+</config>
