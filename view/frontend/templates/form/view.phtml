@@ -1,0 +1,93 @@
+<?php
+/** @var WilchersFormBuilderBlockFrontendFormRenderer $block */
+$form = $block->getForm();
+$identifier = $block->getIdentifier();
+?>
+<?php if (!$form): ?>
+<div class="message error"><span><?= __('Dit formulier is niet beschikbaar.') ?></span></div>
+<?php return; endif; ?>
+
+<div class="wilchers-form-page">
+
+<?php if ($identifier === 'herroeping'): ?>
+<div class="herroeping-intro">
+  <h1>Herroeping &amp; Retour</h1>
+  <div class="herroeping-uitleg">
+    <p>Op grond van de Europese consumentenrechtenrichtlijn (EU 2011/83) heeft u het recht om binnen
+    <strong>14 dagen</strong> na ontvangst, zonder opgave van reden, uw aankoop te herroepen.
+    Na herroeping heeft u nog 14 dagen om het product retour te sturen.</p>
+    <h3>Retourvoorwaarden</h3>
+    <ul>
+      <li>Het product moet ongebruikt en onbeschadigd zijn.</li>
+      <li>U draagt zelf de retourkosten.</li>
+      <li>Na ontvangst vergoeden wij het volledige aankoopbedrag inclusief de oorspronkelijke verzendkosten.</li>
+    </ul>
+    <p class="model-note"><em>Dit digitale formulier heeft dezelfde juridische werking als het wettelijke
+    modelformulier voor herroeping (EU Richtlijn 2011/83/EU, Bijlage I-B).</em></p>
+  </div>
+</div>
+<?php else: ?>
+<h1 class="page-title"><?= $block->escapeHtml($form->getTitle()) ?></h1>
+<?php endif; ?>
+
+<?php $messages = $block->getLayout()->getMessagesBlock(); $messages->addStorageType(MagentoFrameworkMessageMessageInterface::TYPE_SUCCESS); $messages->addStorageType(MagentoFrameworkMessageMessageInterface::TYPE_ERROR); $messages->addMessages($block->getLayout()->getMessageStorage()->getMessages()); ?>
+<?= $messages->toHtml() ?>
+
+<form class="wilchers-form" action="<?= $block->escapeUrl($block->getFormAction()) ?>" method="post">
+  <?= $block->getBlockHtml('formkey') ?>
+  <input type="hidden" name="identifier" value="<?= $block->escapeHtmlAttr($identifier) ?>"/>
+
+  <?php foreach ($form->getFieldsConfig() as $f):
+    $n    = $block->escapeHtmlAttr($f['name']);
+    $lbl  = $block->escapeHtml($f['label']);
+    $type = $f['type'] ?? 'text';
+    $req  = !empty($f['required']);
+  ?>
+  <div class="field<?= $req ? ' required' : '' ?>">
+    <?php if ($type !== 'checkbox'): ?>
+    <label for="wf_<?= $n ?>"><?= $lbl ?><?= $req ? ' <span class="req">*</span>' : '' ?></label>
+    <?php endif; ?>
+    <div class="control">
+    <?php if ($type === 'textarea'): ?>
+      <textarea id="wf_<?= $n ?>" name="<?= $n ?>" rows="5"<?= $req?' required':'' ?>></textarea>
+    <?php elseif ($type === 'checkbox'): ?>
+      <label class="checkbox-label"><input type="checkbox" id="wf_<?= $n ?>" name="<?= $n ?>" value="1"/> <?= $lbl ?></label>
+    <?php elseif ($type === 'select'): ?>
+      <select id="wf_<?= $n ?>" name="<?= $n ?>"<?= $req?' required':'' ?>><option value="">— kies —</option></select>
+    <?php else: ?>
+      <input type="<?= $block->escapeHtmlAttr($type) ?>" id="wf_<?= $n ?>" name="<?= $n ?>"<?= $req?' required':'' ?>/>
+    <?php endif; ?>
+    </div>
+  </div>
+  <?php endforeach; ?>
+
+  <div class="form-actions">
+    <button type="submit" class="action primary wilchers-submit">
+      <span><?= $identifier === 'herroeping' ? 'Herroeping bevestigen' : 'Versturen' ?></span>
+    </button>
+  </div>
+</form>
+
+<?php if ($identifier === 'herroeping'): ?>
+<p class="legal-footer"><small>Door op "Herroeping bevestigen" te klikken oefent u uw wettelijk herroepingsrecht
+uit conform EU-Richtlijn 2011/83/EU. U ontvangt een e-mailbevestiging met datum en tijdstip van ontvangst.</small></p>
+<?php endif; ?>
+</div>
+
+<style>
+.wilchers-form-page{max-width:700px;margin:0 auto;padding:20px}
+.herroeping-intro h1{color:#6b2fa0}
+.herroeping-uitleg{background:#f9f3ff;border-left:4px solid #6b2fa0;padding:18px 20px;border-radius:4px;margin-bottom:24px}
+.herroeping-uitleg h3{color:#6b2fa0;margin-top:12px}
+.model-note{color:#888;font-size:13px;margin-top:12px}
+.wilchers-form .field{margin-bottom:18px}
+.wilchers-form label{display:block;font-weight:600;margin-bottom:6px;color:#333}
+.wilchers-form .control input,.wilchers-form .control textarea,.wilchers-form .control select{width:100%;padding:10px 12px;border:1px solid #ccc;border-radius:4px;font-size:15px;font-family:inherit;box-sizing:border-box}
+.wilchers-form .control input:focus,.wilchers-form .control textarea:focus{border-color:#6b2fa0;outline:none;box-shadow:0 0 0 2px rgba(107,47,160,.15)}
+.wilchers-form .checkbox-label{display:flex;align-items:center;gap:10px;font-weight:normal;cursor:pointer}
+.wilchers-form .checkbox-label input{width:auto}
+.wilchers-form .req{color:#e02b27}
+.wilchers-submit{background:#6b2fa0;border:none;color:#fff;padding:14px 36px;font-size:16px;border-radius:4px;cursor:pointer;font-family:inherit}
+.wilchers-submit:hover{background:#512380}
+.legal-footer{margin-top:16px;color:#999;font-size:12px}
+</style>
